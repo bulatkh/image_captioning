@@ -1,9 +1,3 @@
-
-# coding: utf-8
-
-# In[1]:
-
-
 import json
 import numpy as np
 import os
@@ -12,18 +6,22 @@ from PIL import Image
 get_ipython().run_line_magic('matplotlib', 'inline')
 
 
-# In[3]:
-
-
 def get_image_filename_with_caption(captions_path, images_path, train=True):
     """
-    Function parses JSON file and returns list with dictionaries of the following format
+    Parses JSON file and returns list with dictionaries of the following format
     {id, path to the image, a caption}
     
-    inputs:
-    - captions_path - path to the folder with caption file
-    - images_path - path to the folder with images
-    - train - flag of the train dataset
+    Parameters:
+    -----------
+    captions_path: str
+        Path to the folder with caption file
+        
+    images_path: str
+        Path to the folder with images
+        
+    train: boolean
+        Flag for the training dataset
+    -----------
     """
     if train:
         full_path = os.path.join(captions_path, 'captions_train2017.json')
@@ -59,15 +57,18 @@ def get_image_filename_with_caption(captions_path, images_path, train=True):
     return res
 
 
-# In[4]:
-
-
 def show_image_with_captions_by_id(idx, filenames_with_captions):
     """
     Function returns an image from the train/val dataset with all the captions by id of the image
     
-    idx - image id
-    filenames_with_captions - list with dictionaries returned by the function above
+    Parameters
+    -----------
+    idx : int
+        ID of the requested image
+        
+    filenames_with_captions
+        List of dictionaries containing images with the corresponding captions
+    ----------
     """
     captions = []
     path = ''
@@ -84,15 +85,18 @@ def show_image_with_captions_by_id(idx, filenames_with_captions):
     imshow(np.asarray(image))
 
 
-# In[5]:
-
-
 def show_image_with_caption(num, filenames_with_captions):
     """
-    Function returns image of the number from the list of dictionaries
+    Returns image of the given number in the list of dictionaries
     
-    num - number of returned image in the list
-    filenames_with_captions - list with dictionaries returned by the function above
+    Parameters
+    -----------
+    num: int
+        number of returned image in the list
+    
+    filenames_with_captions
+        List of dictionaries containing images with the corresponding captions
+    -----------
     """
     path = filenames_with_captions[num]['path']
     idx = filenames_with_captions[num]['id']
@@ -103,12 +107,17 @@ def show_image_with_caption(num, filenames_with_captions):
     image = Image.open(path)
     imshow(np.asarray(image))
 
+    
 def get_image_with_all_captions(filenames_with_captions):
     """
     Function returns a dictionary of the following format
-    {image path, all caption related to the image}
+    {image path, all captions related to the image}
     
-    filenames_with_captions - list with dictionaries returned by the function above
+    Parameters
+    -----------
+    filenames_with_captions
+        List of dictionaries containing images with the corresponding captions
+    -----------
     """
     image_path_with_captions = dict()
     for image in filenames_with_captions:
@@ -118,3 +127,18 @@ def get_image_with_all_captions(filenames_with_captions):
         tmp_captions.append(image['caption'])
         image_path_with_captions.update({image['path']:tmp_captions})  
     return image_path_with_captions
+
+def make_list_of_captions(filenames_with_all_captions):
+    """
+    Extracts captions from the list of dictionaries with filenames and captions
+    
+    Parameters:
+    -----------
+    filenames_with_all_captions: list
+        List of dictionaries containing images with the corresponding captions
+    -----------
+    """
+    captions = []
+    for _, val in filenames_with_all_captions.items():
+        captions.append(val)
+    return captions
