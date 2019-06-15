@@ -2,8 +2,6 @@ import os
 import pickle
 import re
 
-
-
 class Vocabulary(object):
     """
     The class is used to form a vocabulary (bag-of-words)
@@ -22,9 +20,11 @@ class Vocabulary(object):
     """
     
     def __init__(self):
-        self.number_of_words = 0
+        self.number_of_words = 1
         self.word_to_id = dict()
         self.id_to_word = dict()
+        self.word_to_id['<un>'] = 0
+        self.id_to_word[0] = '<un>'
     
     def add_word(self, word):
         """
@@ -37,11 +37,10 @@ class Vocabulary(object):
         -----------
         """
         if word not in self.word_to_id:
-            self.number_of_words += 1
             self.word_to_id[word] = self.number_of_words
             self.id_to_word[self.number_of_words] = word
-            
-    
+            self.number_of_words += 1
+                
     def get_id_by_word(self, word):
         """
         Returns id for an input word
@@ -126,7 +125,7 @@ def preprocess_captions(all_captions):
     """
     for captions_list in all_captions:
         for i, caption in enumerate(captions_list):
-            captions_list[i] = re.sub('\W+', ' ', caption)
+            captions_list[i] = re.sub('\W+', ' ', caption.lower())
 
 
 def add_start_and_end_to_captions(all_captions, start_str = '<SOS>', end_str = '<EOS>'):
