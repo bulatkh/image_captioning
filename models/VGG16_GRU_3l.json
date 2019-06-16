@@ -1,1 +1,365 @@
-{"class_name": "Model", "config": {"name": "model_3", "layers": [{"name": "decoder_input", "class_name": "InputLayer", "config": {"batch_input_shape": [null, null], "dtype": "float32", "sparse": false, "name": "decoder_input"}, "inbound_nodes": []}, {"name": "encoder_input", "class_name": "InputLayer", "config": {"batch_input_shape": [null, 4096], "dtype": "float32", "sparse": false, "name": "encoder_input"}, "inbound_nodes": []}, {"name": "embedding", "class_name": "Embedding", "config": {"name": "embedding", "trainable": true, "batch_input_shape": [null, null], "dtype": "float32", "input_dim": 7373, "output_dim": 512, "embeddings_initializer": {"class_name": "RandomUniform", "config": {"minval": -0.05, "maxval": 0.05, "seed": null}}, "embeddings_regularizer": null, "activity_regularizer": null, "embeddings_constraint": null, "mask_zero": false, "input_length": null}, "inbound_nodes": [[["decoder_input", 0, 0, {}]]]}, {"name": "encoder_reduction", "class_name": "Dense", "config": {"name": "encoder_reduction", "trainable": true, "units": 512, "activation": "relu", "use_bias": true, "kernel_initializer": {"class_name": "VarianceScaling", "config": {"scale": 1.0, "mode": "fan_avg", "distribution": "uniform", "seed": null}}, "bias_initializer": {"class_name": "Zeros", "config": {}}, "kernel_regularizer": null, "bias_regularizer": null, "activity_regularizer": null, "kernel_constraint": null, "bias_constraint": null}, "inbound_nodes": [[["encoder_input", 0, 0, {}]]]}, {"name": "GRU1", "class_name": "GRU", "config": {"name": "GRU1", "trainable": true, "return_sequences": true, "return_state": false, "go_backwards": false, "stateful": false, "unroll": false, "units": 512, "activation": "tanh", "recurrent_activation": "hard_sigmoid", "use_bias": true, "kernel_initializer": {"class_name": "VarianceScaling", "config": {"scale": 1.0, "mode": "fan_avg", "distribution": "uniform", "seed": null}}, "recurrent_initializer": {"class_name": "Orthogonal", "config": {"gain": 1.0, "seed": null}}, "bias_initializer": {"class_name": "Zeros", "config": {}}, "kernel_regularizer": null, "recurrent_regularizer": null, "bias_regularizer": null, "activity_regularizer": null, "kernel_constraint": null, "recurrent_constraint": null, "bias_constraint": null, "dropout": 0.0, "recurrent_dropout": 0.0, "implementation": 1, "reset_after": false}, "inbound_nodes": [[["embedding", 0, 0, {}], ["encoder_reduction", 0, 0, {}]]]}, {"name": "GRU2", "class_name": "GRU", "config": {"name": "GRU2", "trainable": true, "return_sequences": true, "return_state": false, "go_backwards": false, "stateful": false, "unroll": false, "units": 512, "activation": "tanh", "recurrent_activation": "hard_sigmoid", "use_bias": true, "kernel_initializer": {"class_name": "VarianceScaling", "config": {"scale": 1.0, "mode": "fan_avg", "distribution": "uniform", "seed": null}}, "recurrent_initializer": {"class_name": "Orthogonal", "config": {"gain": 1.0, "seed": null}}, "bias_initializer": {"class_name": "Zeros", "config": {}}, "kernel_regularizer": null, "recurrent_regularizer": null, "bias_regularizer": null, "activity_regularizer": null, "kernel_constraint": null, "recurrent_constraint": null, "bias_constraint": null, "dropout": 0.0, "recurrent_dropout": 0.0, "implementation": 1, "reset_after": false}, "inbound_nodes": [[["GRU1", 0, 0, {}], ["encoder_reduction", 0, 0, {}]]]}, {"name": "GRU3", "class_name": "GRU", "config": {"name": "GRU3", "trainable": true, "return_sequences": true, "return_state": false, "go_backwards": false, "stateful": false, "unroll": false, "units": 512, "activation": "tanh", "recurrent_activation": "hard_sigmoid", "use_bias": true, "kernel_initializer": {"class_name": "VarianceScaling", "config": {"scale": 1.0, "mode": "fan_avg", "distribution": "uniform", "seed": null}}, "recurrent_initializer": {"class_name": "Orthogonal", "config": {"gain": 1.0, "seed": null}}, "bias_initializer": {"class_name": "Zeros", "config": {}}, "kernel_regularizer": null, "recurrent_regularizer": null, "bias_regularizer": null, "activity_regularizer": null, "kernel_constraint": null, "recurrent_constraint": null, "bias_constraint": null, "dropout": 0.0, "recurrent_dropout": 0.0, "implementation": 1, "reset_after": false}, "inbound_nodes": [[["GRU2", 0, 0, {}], ["encoder_reduction", 0, 0, {}]]]}, {"name": "decoder_output", "class_name": "Dense", "config": {"name": "decoder_output", "trainable": true, "units": 7373, "activation": "softmax", "use_bias": true, "kernel_initializer": {"class_name": "VarianceScaling", "config": {"scale": 1.0, "mode": "fan_avg", "distribution": "uniform", "seed": null}}, "bias_initializer": {"class_name": "Zeros", "config": {}}, "kernel_regularizer": null, "bias_regularizer": null, "activity_regularizer": null, "kernel_constraint": null, "bias_constraint": null}, "inbound_nodes": [[["GRU3", 0, 0, {}]]]}], "input_layers": [["encoder_input", 0, 0], ["decoder_input", 0, 0]], "output_layers": [["decoder_output", 0, 0]]}, "keras_version": "2.2.4", "backend": "tensorflow"}
+{
+    "class_name": "Model",
+    "config": {
+        "name": "model_1",
+        "layers": [
+            {
+                "name": "decoder_input",
+                "class_name": "InputLayer",
+                "config": {
+                    "batch_input_shape": [
+                        null,
+                        null
+                    ],
+                    "dtype": "float32",
+                    "sparse": false,
+                    "name": "decoder_input"
+                },
+                "inbound_nodes": []
+            },
+            {
+                "name": "encoder_input",
+                "class_name": "InputLayer",
+                "config": {
+                    "batch_input_shape": [
+                        null,
+                        4096
+                    ],
+                    "dtype": "float32",
+                    "sparse": false,
+                    "name": "encoder_input"
+                },
+                "inbound_nodes": []
+            },
+            {
+                "name": "embedding",
+                "class_name": "Embedding",
+                "config": {
+                    "name": "embedding",
+                    "trainable": true,
+                    "batch_input_shape": [
+                        null,
+                        null
+                    ],
+                    "dtype": "float32",
+                    "input_dim": 7373,
+                    "output_dim": 512,
+                    "embeddings_initializer": {
+                        "class_name": "RandomUniform",
+                        "config": {
+                            "minval": -0.05,
+                            "maxval": 0.05,
+                            "seed": null
+                        }
+                    },
+                    "embeddings_regularizer": null,
+                    "activity_regularizer": null,
+                    "embeddings_constraint": null,
+                    "mask_zero": false,
+                    "input_length": null
+                },
+                "inbound_nodes": [
+                    [
+                        [
+                            "decoder_input",
+                            0,
+                            0,
+                            {}
+                        ]
+                    ]
+                ]
+            },
+            {
+                "name": "encoder_reduction",
+                "class_name": "Dense",
+                "config": {
+                    "name": "encoder_reduction",
+                    "trainable": true,
+                    "units": 512,
+                    "activation": "relu",
+                    "use_bias": true,
+                    "kernel_initializer": {
+                        "class_name": "VarianceScaling",
+                        "config": {
+                            "scale": 1.0,
+                            "mode": "fan_avg",
+                            "distribution": "uniform",
+                            "seed": null
+                        }
+                    },
+                    "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                    },
+                    "kernel_regularizer": null,
+                    "bias_regularizer": null,
+                    "activity_regularizer": null,
+                    "kernel_constraint": null,
+                    "bias_constraint": null
+                },
+                "inbound_nodes": [
+                    [
+                        [
+                            "encoder_input",
+                            0,
+                            0,
+                            {}
+                        ]
+                    ]
+                ]
+            },
+            {
+                "name": "GRU1",
+                "class_name": "GRU",
+                "config": {
+                    "name": "GRU1",
+                    "trainable": true,
+                    "return_sequences": true,
+                    "return_state": false,
+                    "go_backwards": false,
+                    "stateful": false,
+                    "unroll": false,
+                    "units": 512,
+                    "activation": "tanh",
+                    "recurrent_activation": "hard_sigmoid",
+                    "use_bias": true,
+                    "kernel_initializer": {
+                        "class_name": "VarianceScaling",
+                        "config": {
+                            "scale": 1.0,
+                            "mode": "fan_avg",
+                            "distribution": "uniform",
+                            "seed": null
+                        }
+                    },
+                    "recurrent_initializer": {
+                        "class_name": "Orthogonal",
+                        "config": {
+                            "gain": 1.0,
+                            "seed": null
+                        }
+                    },
+                    "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                    },
+                    "kernel_regularizer": null,
+                    "recurrent_regularizer": null,
+                    "bias_regularizer": null,
+                    "activity_regularizer": null,
+                    "kernel_constraint": null,
+                    "recurrent_constraint": null,
+                    "bias_constraint": null,
+                    "dropout": 0.0,
+                    "recurrent_dropout": 0.0,
+                    "implementation": 1,
+                    "reset_after": false
+                },
+                "inbound_nodes": [
+                    [
+                        [
+                            "embedding",
+                            0,
+                            0,
+                            {}
+                        ],
+                        [
+                            "encoder_reduction",
+                            0,
+                            0,
+                            {}
+                        ]
+                    ]
+                ]
+            },
+            {
+                "name": "GRU2",
+                "class_name": "GRU",
+                "config": {
+                    "name": "GRU2",
+                    "trainable": true,
+                    "return_sequences": true,
+                    "return_state": false,
+                    "go_backwards": false,
+                    "stateful": false,
+                    "unroll": false,
+                    "units": 512,
+                    "activation": "tanh",
+                    "recurrent_activation": "hard_sigmoid",
+                    "use_bias": true,
+                    "kernel_initializer": {
+                        "class_name": "VarianceScaling",
+                        "config": {
+                            "scale": 1.0,
+                            "mode": "fan_avg",
+                            "distribution": "uniform",
+                            "seed": null
+                        }
+                    },
+                    "recurrent_initializer": {
+                        "class_name": "Orthogonal",
+                        "config": {
+                            "gain": 1.0,
+                            "seed": null
+                        }
+                    },
+                    "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                    },
+                    "kernel_regularizer": null,
+                    "recurrent_regularizer": null,
+                    "bias_regularizer": null,
+                    "activity_regularizer": null,
+                    "kernel_constraint": null,
+                    "recurrent_constraint": null,
+                    "bias_constraint": null,
+                    "dropout": 0.0,
+                    "recurrent_dropout": 0.0,
+                    "implementation": 1,
+                    "reset_after": false
+                },
+                "inbound_nodes": [
+                    [
+                        [
+                            "GRU1",
+                            0,
+                            0,
+                            {}
+                        ],
+                        [
+                            "encoder_reduction",
+                            0,
+                            0,
+                            {}
+                        ]
+                    ]
+                ]
+            },
+            {
+                "name": "GRU3",
+                "class_name": "GRU",
+                "config": {
+                    "name": "GRU3",
+                    "trainable": true,
+                    "return_sequences": true,
+                    "return_state": false,
+                    "go_backwards": false,
+                    "stateful": false,
+                    "unroll": false,
+                    "units": 512,
+                    "activation": "tanh",
+                    "recurrent_activation": "hard_sigmoid",
+                    "use_bias": true,
+                    "kernel_initializer": {
+                        "class_name": "VarianceScaling",
+                        "config": {
+                            "scale": 1.0,
+                            "mode": "fan_avg",
+                            "distribution": "uniform",
+                            "seed": null
+                        }
+                    },
+                    "recurrent_initializer": {
+                        "class_name": "Orthogonal",
+                        "config": {
+                            "gain": 1.0,
+                            "seed": null
+                        }
+                    },
+                    "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                    },
+                    "kernel_regularizer": null,
+                    "recurrent_regularizer": null,
+                    "bias_regularizer": null,
+                    "activity_regularizer": null,
+                    "kernel_constraint": null,
+                    "recurrent_constraint": null,
+                    "bias_constraint": null,
+                    "dropout": 0.0,
+                    "recurrent_dropout": 0.0,
+                    "implementation": 1,
+                    "reset_after": false
+                },
+                "inbound_nodes": [
+                    [
+                        [
+                            "GRU2",
+                            0,
+                            0,
+                            {}
+                        ],
+                        [
+                            "encoder_reduction",
+                            0,
+                            0,
+                            {}
+                        ]
+                    ]
+                ]
+            },
+            {
+                "name": "decoder_output",
+                "class_name": "Dense",
+                "config": {
+                    "name": "decoder_output",
+                    "trainable": true,
+                    "units": 7373,
+                    "activation": "softmax",
+                    "use_bias": true,
+                    "kernel_initializer": {
+                        "class_name": "VarianceScaling",
+                        "config": {
+                            "scale": 1.0,
+                            "mode": "fan_avg",
+                            "distribution": "uniform",
+                            "seed": null
+                        }
+                    },
+                    "bias_initializer": {
+                        "class_name": "Zeros",
+                        "config": {}
+                    },
+                    "kernel_regularizer": null,
+                    "bias_regularizer": null,
+                    "activity_regularizer": null,
+                    "kernel_constraint": null,
+                    "bias_constraint": null
+                },
+                "inbound_nodes": [
+                    [
+                        [
+                            "GRU3",
+                            0,
+                            0,
+                            {}
+                        ]
+                    ]
+                ]
+            }
+        ],
+        "input_layers": [
+            [
+                "encoder_input",
+                0,
+                0
+            ],
+            [
+                "decoder_input",
+                0,
+                0
+            ]
+        ],
+        "output_layers": [
+            [
+                "decoder_output",
+                0,
+                0
+            ]
+        ]
+    },
+    "keras_version": "2.2.4",
+    "backend": "tensorflow"
+}
