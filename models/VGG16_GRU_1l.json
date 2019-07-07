@@ -1,7 +1,7 @@
 {
     "class_name": "Model",
     "config": {
-        "name": "model_3",
+        "name": "model_1",
         "layers": [
             {
                 "name": "decoder_input",
@@ -55,7 +55,7 @@
                     "embeddings_regularizer": null,
                     "activity_regularizer": null,
                     "embeddings_constraint": null,
-                    "mask_zero": false,
+                    "mask_zero": true,
                     "input_length": null
                 },
                 "inbound_nodes": [
