@@ -1,3 +1,4 @@
+import numpy as np
 import os
 import pickle
 import re
@@ -8,8 +9,10 @@ class Vocabulary(object):
         self.number_of_words = 1
         self.word_to_id = dict()
         self.id_to_word = dict()
+        self.word_counter = dict()
         self.word_to_id['<un>'] = 0
         self.id_to_word[0] = '<un>'
+        self.word_counter['<un>'] = 0 
     
     def add_word(self, word):
         """
@@ -20,7 +23,10 @@ class Vocabulary(object):
         if word not in self.word_to_id:
             self.word_to_id[word] = self.number_of_words
             self.id_to_word[self.number_of_words] = word
+            self.word_counter[word] = 1
             self.number_of_words += 1
+        else:
+            self.word_counter[word] += 1
                 
     def get_id_by_word(self, word):
         """
@@ -40,7 +46,39 @@ class Vocabulary(object):
         """
         return self.id_to_word[idx]
     
-    def save_vocabulary(self, filename_word_to_id='word_to_id.pickle', filename_id_to_word='id_to_word.pickle'):
+    def get_word_frequency(self, word):
+        """
+        Return a frequncy for a given word
+        
+        :param word: input word
+        :return: frequency
+        """
+        return self.word_counter[word]
+    
+    def get_most_frequent_words(self, word_num, pct=False):
+        """
+        Return word_num most frequent words
+        
+        :param word_num: the number of words to return 
+        :return: dictionary of size word_num
+        """
+        tmp_dict = self.word_counter
+        if '<sos>' and '<eos>' in tmp_dict:
+            tmp_dict.pop('<sos>')
+            tmp_dict.pop('<eos>')
+        freq_list = sorted(tmp_dict.items(), key=lambda x: x[1], reverse=True)
+        if pct:
+            sum_words = 0
+            freq_list_pct = []
+            for pair in freq_list:
+                sum_words += pair[1]
+            for i, pair in enumerate(freq_list):
+                freq_list_pct.append((pair[0], round(pair[1] / sum_words, 5)))
+            return freq_list_pct[:word_num]
+        else:
+            return freq_list[:word_num]
+    
+    def save_vocabulary(self, filename_word_to_id='word_to_id.pickle', filename_id_to_word='id_to_word.pickle', filename_counter='word_counter.pickle'):
         """
         Saves vocabulary dictionaries to pickle files
 
@@ -51,6 +89,7 @@ class Vocabulary(object):
             os.mkdir('./vocabulary')
         path_word_to_id = os.path.join('./vocabulary/', filename_word_to_id)
         path_id_to_word = os.path.join('./vocabulary/', filename_id_to_word)
+        path_word_counter = os.path.join('./vocabulary/', filename_counter)
         
         with open(path_word_to_id, 'wb') as writer:
             pickle.dump(self.word_to_id, writer)
@@ -58,7 +97,10 @@ class Vocabulary(object):
         with open(path_id_to_word, 'wb') as writer:
             pickle.dump(self.id_to_word, writer)
             
-    def load_vocabulary(self, path_word_to_id, path_id_to_word):
+        with open(path_word_counter, 'wb') as writer:
+            pickle.dump(self.word_counter, writer)
+            
+    def load_vocabulary(self, path_word_to_id, path_id_to_word, path_word_counter):
         """
         Loads vocabulary dictionaries from pickle files
 
@@ -70,6 +112,9 @@ class Vocabulary(object):
             
         with open(path_id_to_word, 'rb') as reader:
             self.id_to_word = pickle.load(reader)
+            
+        with open(path_word_counter, 'rb') as reader:
+            self.word_counter = pickle.load(reader)
             
         self.number_of_words = len(self.word_to_id)
 
