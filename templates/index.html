@@ -1,0 +1,75 @@
+{% extends "bootstrap/base.html" %}
+
+{% block content %}
+    <div class="jumbotron">
+        <div class="container">
+            <h1 class="display-4">Image Captioning Demo</h1>
+            <p class="lead"> That is the demonstration of the Image Captioning system
+                prototype designed for Master Project at The University of Manchester by Bulat Khaertdinov</p>
+            <p>The image captioning system was built using Deep Learning methods: Encoder-Decoder framework and attention mechanism.
+                Using this demonstration you can attach your own file below or use a random image from a dataset.</p>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <form method=post action="/generate" enctype=multipart/form-data>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Attach an image</label>
+                        <input type="file" name=file value="Choose file">
+                        <small id="fileHelp" class="'form-text text-muted"> The file should be of .jpg or .jpeg format.</small>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                <div class="form-group">
+                    <label class="col-form-label"> Beam size</label>
+                    <input class="form-control" type="number" name="beam" value=1 min="1" max="10">
+                    <small id="beamSizeHelp" class="'form-text text-muted"> An integer from 1 to 10</small>
+                </div>
+                </div>
+                <div class="col-md-2">
+                <div class="form-check">
+                    <label class="col-form-label">Use random test image</label>
+                    <input class="form-check-input" type="checkbox", name="test">
+                    <small id="checkHelp" class="'form-text text-muted"> The file will be ignored</small>
+                </div>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary">Generate caption</button>
+                </div>
+                <div class="col-md-2">
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            <ul class="text-danger">
+                                {% for message in messages %}
+                                    *{{ message }}
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    {% endwith %}
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="container">
+        <div class="col-md-3">
+            {% if imagesource %}
+                <img width=224 height=224 src="{{ imagesource }}">
+            {% endif %}
+        </div>
+        <div class="col-md-6">
+                {% if captions %}
+                <h5><b>Generated captions:</b></h5>
+                        {% for caption in captions %}
+                        <ul>{{ caption }}</ul>
+                        {% endfor %}
+                {% endif %}
+        </div>
+    </div>
+    <div class="container">
+        {% if weights_image %}
+            <img src="{{ weights_image }}">
+        {% endif %}
+    </div>
+
+{% endblock %}
