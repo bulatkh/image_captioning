@@ -14,21 +14,13 @@ class PathGenerator(object):
         if drop:
             dr = '_dr'
         beam = '_' + str(beam_size) + 'b'
-        self._model_path = './models/VGG16_{}_{}l{}{}{}.json'.format(
+        self._model_path = './model_files/models/VGG16_{}_{}l{}{}{}.json'.format(
             model,
             layers,
             bn,
             dr,
             attn)
-        self._weights_path = './weights/VGG16_{}_{}_{}l_{}b{}{}{}.hdf5'.format(
-            model,
-            dataset,
-            layers,
-            batch_size,
-            bn,
-            dr,
-            attn)
-        self._callbacks_path = './callbacks/VGG16_{}_{}_{}l_{}b{}{}{}.csv'.format(
+        self._weights_path = './model_files/weights/VGG16_{}_{}_{}l_{}b{}{}{}.hdf5'.format(
             model,
             dataset,
             layers,
@@ -36,7 +28,15 @@ class PathGenerator(object):
             bn,
             dr,
             attn)
-        self._captions_path = './captions/VGG16_{}_{}_{}l_{}b{}{}{}{}.txt'.format(
+        self._callbacks_path = './model_files/callbacks/VGG16_{}_{}_{}l_{}b{}{}{}.csv'.format(
+            model,
+            dataset,
+            layers,
+            batch_size,
+            bn,
+            dr,
+            attn)
+        self._captions_path = './model_files/captions/VGG16_{}_{}_{}l_{}b{}{}{}{}.txt'.format(
             model,
             dataset,
             layers,
