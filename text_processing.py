@@ -73,7 +73,7 @@ class Vocabulary(object):
             for pair in freq_list:
                 sum_words += pair[1]
             for i, pair in enumerate(freq_list):
-                freq_list_pct.append((pair[0], round(pair[1] / sum_words, 5)))
+                freq_list_pct.append(str(pair[0]) + ' - ' + str(round(pair[1] / sum_words * 100, 2)) + '%')
             return freq_list_pct[:word_num]
         else:
             return freq_list[:word_num]

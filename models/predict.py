@@ -1,10 +1,13 @@
+from PIL import Image
 from keras import Model
+from models import image_preprocessing
+from scipy import misc
 from tqdm import tqdm_notebook as tqdm
 
-from models import image_preprocessing
+
 import math
 import matplotlib.pyplot as plt
-from scipy import misc
+
 import numpy as np
 
 
@@ -106,7 +109,7 @@ def generate_test_captions(test_images, *args):
     """
     captions = []
     for i, image in tqdm(enumerate(test_images)):
-        captions.append(generate_caption(image, *args))
+        captions.append(generate_caption(image, *args)[0][0])
 
     return captions
 
@@ -140,7 +143,7 @@ def get_weights_plot(best_caption, weights, path, mode, save_path=''):
     for word_num in range(len(best_caption)):
         print(best_caption[word_num])
         weights_img = np.reshape(weights[word_num], [14, 14])
-        weights_img = misc.imresize(weights_img, (224, 224))
+        weights_img = np.array(Image.fromarray(weights_img).resize((224, 224), Image.LANCZOS))
         img = image_preprocessing.image_preprocessing(path, (224, 224))
         plt.subplot(rows, cols, word_num + 1)
         plt.title(best_caption[word_num], fontsize=20)
