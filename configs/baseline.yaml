@@ -1,0 +1,8 @@
+NAME : "GRU baseline"
+
+DECODER : 
+  EPOCHS : 20
+  BATCH_SIZE : 16
+  BATCH_NORM : False
+  DROPOUT : False
+  NUM_RNN_LAYERS : 1 
