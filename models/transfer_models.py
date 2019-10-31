@@ -60,9 +60,9 @@ def use_pretrained_model_for_images(filenames_with_all_captions, attn, batch_siz
 
         # progress print
         if iter_count == five_perc:
-            cur_progress += 5
             iter_count = 0
             print(str(cur_progress) + "% of images processed")
+            cur_progress += 5
 
         # to make sure that last batch is not beyond the number of the images
         if last_i > num_images:
