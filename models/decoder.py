@@ -137,44 +137,44 @@ class Decoder:
         """
         Connects the transfer values to words and pass to LSTM with attention.
         """
-        print('Initial features shape', self.encoder_input.shape)
+        # print('Initial features shape', self.encoder_input.shape)
         X = self.decoder_input
         X = self.embedding(X)
-        print('word-embedding', X.shape)
+        # print('word-embedding', X.shape)
         if self.dropout:
             X = self.drop1(X)
-        print('Initial states')
+        # print('Initial states')
         s0 = Lambda(lambda x: K.mean(x, axis=1))(self.encoder_input)
         s0 = Dense(self.state_size, activation='relu')(s0)
         s0 = BatchNormalization()(s0)
         s = s0
-        print('s initial', s.shape)
+        # print('s initial', s.shape)
         c0 = Lambda(lambda x: K.mean(x, axis=1))(self.encoder_input)
         c0 = Dense(self.state_size, activation='relu')(c0)
         c0 = BatchNormalization()(c0)
         c = c0
-        print('c initial', c.shape)
+        # print('c initial', c.shape)
         lstm_att_out = []
         for i in range(self.max_len):
-            print('------------------------')
-            print('LSTM iteration {}'.format(i))
+            # print('------------------------')
+            # print('LSTM iteration {}'.format(i))
             if self.attn_type == 'bahdanau':
                 context = self._bahdanau_attention(s, i)
             elif self.attn_type == 'scaled_dot':
                 context = self._scaled_dot_product_attention(s, i)
             else:
                 raise ValueError('No such attention mechanism')
-            print('context', context.shape)
+            # print('context', context.shape)
             tmp_X = Lambda(lambda x, t: K.expand_dims(x[:, t], axis=1), arguments={'t': i},
                            output_shape=lambda s: (s[0], 1, s[2]))(X)
-            print('current word vector', tmp_X.shape)
+            # print('current word vector', tmp_X.shape)
             concat = concatenate([context, tmp_X])
-            print('lstm input: context-word concat', concat.shape)
+            # print('lstm input: context-word concat', concat.shape)
             s, _, c = self.lstm_att(concat, initial_state=[s, c])
-            print('hidden state', s.shape)
+            # print('hidden state', s.shape)
             lstm_att_out.append(s)
         out = Lambda(lambda x: K.stack(x, axis=1))(lstm_att_out)
-        print('final lstm output shape', X.shape)
+        # print('final lstm output shape', X.shape)
         if self.batch_norm:
             out = self.bn2(out)
         if self.layers == 2:
@@ -182,7 +182,7 @@ class Decoder:
         if self.batch_norm:
             out = self.bn3(out)
         decoder_output = self.decoder_dense(out)
-        print('output', decoder_output.shape)
+        # print('output', decoder_output.shape)
         return decoder_output
 
     def _scaled_dot_product_attention(self, s_prev, i):
