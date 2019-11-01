@@ -1,4 +1,4 @@
-NAME : "GRU baseline"
+NAME : "GRU-1 baseline"
 
 DECODER : 
   EPOCHS : 20
