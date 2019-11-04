@@ -1,0 +1,12 @@
+.ipynb_checkpoints/
+cnn_features/
+__pycache__/
+vocabulary/
+.flaskenv
+.gitignore.swp
+.idea/
+model_files/weights/
+test.png
+.vscode/
+weights_img/
+venv/
