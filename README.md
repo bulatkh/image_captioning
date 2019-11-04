@@ -18,7 +18,7 @@ On the contrary, various types of decoders (```models/decoder.py```) were implem
 * GRU decoder with Batch Normalisation and Dropout regularisation,
 * LSTM decoder with regularisation,
 * LSTM decoder with regularisation and scaled dot-product attention.
-* LSTM decoder with regularisation and soft attention.
+* LSTM decoder with regularisation and soft (Bahdanau-like) attention.
 
 In addition, the models generated predictions using beam search (with beam sizes 1, 3 and 5). The predicting algorithm is implemented in ```models/predict.py```.
 
@@ -65,24 +65,25 @@ A typical use case of the implemented application is shown in Figure 4.
 Figure 4: A use case of the system.
 
 ## How To Use
-The project uses [YACS library](https://github.com/rbgirshick/yacs) for managing configurations. The architectures and hyperparameters are managed using ```configs``` directory: ```configs/default.py``` contains a default set of hyperparameters. Each notebook includes the following code to conduct experiments for the baseline model with another set of hyperparameters defined in ```configs/baseline.yaml```:
-```
-config_file = "./configs/baseline.yaml"
-update_config(config, config_file)
-```
-So, another experiment might be launched similarly by creating a yaml file and passing its path to ```config_file``` variable.
-
-The following steps are the recommendations on how to use the code:
-1. Launch ```encoder.ipynb``` and run all cells to encode image features using VGG16 encoder network. Please, note that you should specify the path to the dataset in the configurations file. Also, features for models with attention and without it are taken from the different layers of the network.
-2. Run all cells in ```train_model.ipynb``` to train the model from your configurations.
-3. The model might be tested in ```evaluation.ipynb```.
-
-To run the app you should:
-1. Perform steps 1 and 2 from the above list using ```configs/attn.yaml``` configurations file. TThis file contains the configuration for the model with soft attention showed the best performance among all the implemented models. You should alter cells with configuration updates to the following:
+The project uses [YACS library](https://github.com/rbgirshick/yacs) for managing configurations. The architectures and hyperparameters are managed using ```configs``` directory: ```configs/default.py``` contains a default set of hyperparameters. Each notebook includes the following code to conduct experiments for the best model with soft (Bahdanau) attention which configuration is in ```configs/attn.yaml```:
 ```
 config_file = "./configs/attn.yaml"
 update_config(config, config_file)
 ```
+So, another experiment might be launched similarly by creating a yaml file and passing its path to ```config_file``` variable. For example, a yaml file for the baseline model with 1-layer GRU decoder is provided in ```configs/baseline.yaml```. You can easily use this configuration if you just change the configuration cell in a notebook as follows:
+```
+config_file = "./configs/baseline.yaml"
+update_config(config, config_file)
+```
+
+The following steps are the recommendations on how to use the code to train and evaluate the models:
+1. Define configurations of your model and create a yaml file in ```configs``` directory. This configuration should be then passed to the ```config_file``` variable in all the notebooks.
+2. Launch ```encoder.ipynb``` and run all cells to encode image features using VGG16 encoder network. Please, note that you should specify the path to the dataset in the configurations file. Also, features for models with attention and without it are taken from the different layers of the network.
+3. Run all cells in ```train_model.ipynb``` to train the model from your configurations.
+4. The model might be tested in ```evaluation.ipynb```.
+
+To run the app you should:
+1. Perform steps 1 and 2 from the above list using ```configs/attn.yaml``` configurations file. This file contains the configuration for the model with soft attention showed the best performance among all the implemented models. 
 2. Create virtual environment ```venv``` from the ```requirements.txt```.
 3. Activate virtual environment. For Windows:
 ```
