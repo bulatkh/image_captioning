@@ -24,6 +24,8 @@ class Decoder:
         self.transfer_values = transfer_values
         self.max_len = max_len
         self.vocab = vocab
+        if attn and gru:
+            raise ValueError('Attention might be used with LSTM only')
         if attn:
             self.encoder_input = Input(shape=(transfer_values.shape[1], transfer_values.shape[2]), name='encoder_input')
         else:
@@ -193,21 +195,21 @@ class Decoder:
         :param s_prev: previous state of LSTM
         :param i: the number of LSTM iteration
         """
-        print('------------------------')
-        print('Attention')
-        print('img features', self.encoder_input.shape)
-        print('prev state', s_prev.shape)
+        # print('------------------------')
+        # print('Attention')
+        # print('img features', self.encoder_input.shape)
+        # print('prev state', s_prev.shape)
         s_prev = Lambda(lambda x: K.expand_dims(x, 1))(s_prev)
         dot_prod = Dot(axes=2)([self.encoder_input, s_prev])
-        print('dot prod', dot_prod.shape)
+        # print('dot prod', dot_prod.shape)
         scaled_dot_prod = Lambda(lambda x: x / np.sqrt(512))(dot_prod)
-        print('dot prod', dot_prod.shape)
+        # print('dot prod', dot_prod.shape)
         weights = self.densor2(scaled_dot_prod)
         weights = Lambda(lambda x: K.softmax(x, axis=1), name='weights_{}'.format(i))(weights)
-        print('weights', weights.shape)
+        # print('weights', weights.shape)
         context = Dot(axes=1)([weights, self.encoder_input])
-        print('context', context.shape)
-        print('------------------------')
+        # print('context', context.shape)
+        # print('------------------------')
         return context
 
     def _bahdanau_attention(self, s_prev, i):
@@ -218,27 +220,27 @@ class Decoder:
         :param s_prev: previous state of LSTM
         :param i: the number of LSTM iteration
         """
-        print('------------------------')
-        print('Attention')
-        print('img features', self.encoder_input.shape)
-        print('prev state', s_prev.shape)
+        # print('------------------------')
+        # print('Attention')
+        # print('img features', self.encoder_input.shape)
+        # print('prev state', s_prev.shape)
         a_dense = self.densor_feat(self.encoder_input)
-        print('a_dense', a_dense.shape)
+        # print('a_dense', a_dense.shape)
         s_prev = Lambda(lambda x: K.expand_dims(x, 1))(s_prev)
         s_dense = self.densor_s(s_prev)
-        print('s_dense', s_dense.shape)
+        # print('s_dense', s_dense.shape)
         sum_dense = add([a_dense, s_dense])
-        print('summary', sum_dense.shape)
+        # print('summary', sum_dense.shape)
         concat = Lambda(lambda x: K.tanh(x))(sum_dense)
-        print('first_dense', concat.shape)
+        # print('first_dense', concat.shape)
         weights = self.densor2(concat)
         weights = Lambda(lambda x: K.softmax(x, axis=1), name='weights_{}'.format(i))(weights)
-        print('weights', weights.shape)
+        # print('weights', weights.shape)
         context = Dot(axes=1)([weights, self.encoder_input])
         gating_scalar = self.gating_scalar_func(s_prev)
         context = Multiply()([context, gating_scalar])
-        print('context', context.shape)
-        print('------------------------')
+        # print('context', context.shape)
+        # print('------------------------')
         return context
 
 
