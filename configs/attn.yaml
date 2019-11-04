@@ -1,0 +1,11 @@
+NAME: "LSTM with soft attention"
+
+ATTENTION: True
+
+DECODER : 
+  EPOCHS : 20
+  BATCH_SIZE : 32
+  BATCH_NORM : True
+  DROPOUT : True
+  GRU: False
+  NUM_RNN_LAYERS : 2 
