@@ -83,14 +83,15 @@ To run the app you should:
 config_file = "./configs/attn.yaml"
 update_config(config, config_file)
 ```
-2. Activate virtual environment. For Windows:
+2. Create virtual environment ```venv``` from the ```requirements.txt```.
+3. Activate virtual environment. For Windows:
 ```
 .\venv\Scripts\activate
 ```
-3. Run flask application:
+4. Run flask application:
 ```
 flask run
 ```
-4. After several initialisations, you will see the local address. Copy and paste it to your browser line to use the app.
+5. After several initialisations, you will see the local address. Copy and paste it to your browser line to use the app.
 
 **Note:** The code in the repository is not well tested for COCO dataset although there is a module to parse it which works generally fine. Thus, errors might be raised while using COCO dataset for model training, testing or evaluation.
