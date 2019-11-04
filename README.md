@@ -65,3 +65,32 @@ A typical use case of the implemented application is shown in Figure 4.
 Figure 4: A use case of the system.
 
 ## How To Use
+The project uses [YACS library](https://github.com/rbgirshick/yacs) for managing configurations. The architectures and hyperparameters are managed using ```configs``` directory: ```configs/default.py``` contains a default set of hyperparameters. Each notebook includes the following code to conduct experiments for the baseline model with another set of hyperparameters defined in ```configs/baseline.yaml```:
+```
+config_file = "./configs/baseline.yaml"
+update_config(config, config_file)
+```
+So, another experiment might be launched similarly by creating a yaml file and passing its path to ```config_file``` variable.
+
+The following steps are the recommendations on how to use the code:
+1. Launch ```encoder.ipynb``` and run all cells to encode image features using VGG16 encoder network. Please, note that you should specify the path to the dataset in the configurations file. Also, features for models with attention and without it are taken from the different layers of the network.
+2. Run all cells in ```train_model.ipynb``` to train the model from your configurations.
+3. The model might be tested in ```evaluation.ipynb```.
+
+To run the app you should:
+1. Perform steps 1 and 2 from the above list using ```configs/attn.yaml``` configurations file. TThis file contains the configuration for the model with soft attention showed the best performance among all the implemented models. You should alter cells with configuration updates to the following:
+```
+config_file = "./configs/attn.yaml"
+update_config(config, config_file)
+```
+2. Activate virtual environment. For Windows:
+```
+.\venv\Scripts\activate
+```
+3. Run flask application:
+```
+flask run
+```
+4. After several initialisations, you will see the local address. Copy and paste it to your browser line to use the app.
+
+**Note:** The code in the repository is not well tested for COCO dataset although there is a module to parse it which works generally fine. Thus, errors might be raised while using COCO dataset for model training, testing or evaluation.
