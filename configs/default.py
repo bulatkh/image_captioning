@@ -46,6 +46,7 @@ _C.DECODER.FACTOR = 0.5
 _C.DECODER.PATIENCE = 2
 _C.DECODER.VERBOSE = 1
 _C.DECODER.MIN_LR = 0.0000001
+_C.DECODER.VAL_STEPS = 5
 
 
 def update_config(cfg, filename):
