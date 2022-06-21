@@ -19,7 +19,7 @@ MarkupSafe==1.1.1
 matplotlib==3.1.0
 mock==3.0.5
 nltk==3.4.5
-numpy==1.16.4
+numpy==1.22.0
 pandas==0.24.2
 Pillow==6.2.1
 protobuf==3.8.0
